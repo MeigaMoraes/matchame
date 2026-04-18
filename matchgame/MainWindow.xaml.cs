@@ -62,17 +62,27 @@ namespace matchgame
                 "🦍", "🦍",
                 "🐌","🐌",
             };
+            
 
             Random random = new Random();
             foreach (TextBlock textBlock in mainGrid.Children.OfType<TextBlock>())
             {
-                int index = random.Next(animalEmoji.Count); //gera index aleatorio, de 0 até a quantidade de emojis que tem na animalEmoji
-                string nextEmoji = animalEmoji[index]; //nextEmoji recebe o valor atual de animalEmoji[index]
-                textBlock.Text = nextEmoji;// textblock recebe o valor de nextEmoji, que é o emoji, logo aparecera um emoji na tela
-                animalEmoji.RemoveAt(index); //remove o emoji atual, sendo assim impedindo de aparecer o mesmo emoji mais de duas vezes (duas vezes pq ainda tem o outro do par para aparecer)
-
+                if (textBlock.Name != "TimeTextBlock")
+                {
+                    textBlock.Visibility = Visibility.Visible;
+                    int index = random.Next(animalEmoji.Count); //gera index aleatorio, de 0 até a quantidade de emojis que tem na animalEmoji
+                    string nextEmoji = animalEmoji[index]; //nextEmoji recebe o valor atual de animalEmoji[index]
+                    textBlock.Text = nextEmoji;// textblock recebe o valor de nextEmoji, que é o emoji, logo aparecera um emoji na tela
+                    animalEmoji.RemoveAt(index); //remove o emoji atual, sendo assim impedindo de aparecer o mesmo emoji mais de duas vezes (duas vezes pq ainda tem o outro do par para aparecer)
+                }
                 
             }
+
+            timer.Start();
+            tenthsOfSecondsElapsed = 0;
+            matchesFound = 0;
+
+
         }
 
         TextBlock lastTextBlockClicked;
@@ -90,6 +100,7 @@ namespace matchgame
             }
             else if(textBlock.Text == lastTextBlockClicked.Text) // se o segundo animal clicado for igual ao primeiro, ele apaga o animal e redefine findingMatch pra false
             {
+                matchesFound++;
                 textBlock.Visibility = Visibility.Hidden;
                 findingMatch = false;
             }
